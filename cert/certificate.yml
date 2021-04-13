@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pafable-com-tls
+spec:
+  secretName: pafable-com
+  issuerRef:
+    name: letsencrypt-ghost
+    kind: ClusterIssuer
+  commonName: pafable.com
+  dnsNames:
+    - pafable.com
+    - www.pafable.com

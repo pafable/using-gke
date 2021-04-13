@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+      - name: ghost-container
+        image: ghost
+        resources:
+          limits: 
+            memory: "128Mi"
+            cpu: "128m"
+        ports:
+        - containerPort: 2368
+        env: 
+          - name: url
+            value: "http://pafable.com"
+          - name: database__connection__host
+            value: mysql-ghost
+          - name: NODE_ENV
+            value: "production"
+          - name: database__connection__database
+            value: ghost
+          - name: database__connection__password
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: password
+          - name: database__connection__user
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: username
+          - name: database__client
+            value: mysql
+          
